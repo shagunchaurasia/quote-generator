@@ -38,20 +38,30 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 //Get Quotes from api
 // https://type.fit/api/quotes
 var apiQuotes;
+var quoteContainer = document.getElementById("quote-container");
+var quoteText = document.getElementById("quote");
+var authorText = document.getElementById("author");
+var twitterButton = document.getElementById("twitter");
+var newQuoteButton = document.getElementById("new-quote");
+var loader = document.getElementById("loader");
 function newQuote() {
+    loading();
     var randomNumber = Math.floor(Math.random() * apiQuotes.length);
-    console.log(randomNumber);
     var quote = apiQuotes[randomNumber];
-    console.log(apiQuotes);
-    console.log(quote);
-    var quoteText = document.getElementById("quote");
+    //Check quote length to determine styling
+    if (quote.text.length > 50) {
+        quoteText === null || quoteText === void 0 ? void 0 : quoteText.classList.add("long-quote");
+    }
+    else {
+        quoteText === null || quoteText === void 0 ? void 0 : quoteText.classList.remove("long-quote");
+    }
     if (quoteText != null) {
-        quoteText.innerHTML = quote.text;
+        quoteText.textContent = quote.text;
     }
-    var quoteAuthor = document.getElementById("author");
-    if (quoteAuthor != null) {
-        quoteAuthor.innerHTML = quote.author || "Anonymous";
+    if (authorText != null) {
+        authorText.textContent = quote.author || "Anonymous";
     }
+    complete();
 }
 function getQuotes() {
     return __awaiter(this, void 0, void 0, function () {
@@ -59,6 +69,7 @@ function getQuotes() {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
+                    loading();
                     apiUrl = "https://type.fit/api/quotes";
                     _a.label = 1;
                 case 1:
@@ -73,7 +84,6 @@ function getQuotes() {
                     return [3 /*break*/, 5];
                 case 4:
                     error_1 = _a.sent();
-                    // Catch Error
                     alert(error_1);
                     return [3 /*break*/, 5];
                 case 5: return [2 /*return*/];
@@ -81,5 +91,26 @@ function getQuotes() {
         });
     });
 }
+//Post to twitter
+function tweetQuote() {
+    var twitterUrl = "https://twitter.com/intent/tweet?text=".concat(quoteText === null || quoteText === void 0 ? void 0 : quoteText.textContent, " - ").concat(authorText === null || authorText === void 0 ? void 0 : authorText.textContent);
+    window.open(twitterUrl, "_blank");
+}
+function loading() {
+    if (loader != null && quoteContainer != null) {
+        loader.hidden = false;
+        quoteContainer.hidden = true;
+    }
+}
+function complete() {
+    if (loader != null && quoteContainer != null) {
+        quoteContainer.hidden = false;
+        loader.hidden = true;
+    }
+}
+//Onload functionality
 getQuotes();
+newQuoteButton === null || newQuoteButton === void 0 ? void 0 : newQuoteButton.addEventListener("click", newQuote);
+twitterButton === null || twitterButton === void 0 ? void 0 : twitterButton.addEventListener("click", tweetQuote);
+loading();
 //# sourceMappingURL=index.js.map
