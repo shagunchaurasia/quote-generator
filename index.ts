@@ -20,7 +20,7 @@ function newQuote() {
   const randomNumber = Math.floor(Math.random() * apiQuotes.length);
   const quote = apiQuotes[randomNumber];
   //Check quote length to determine styling
-  if (quote.text.length > 50) {
+  if (quote.text.length > 120) {
     quoteText?.classList.add("long-quote");
   } else {
     quoteText?.classList.remove("long-quote");
